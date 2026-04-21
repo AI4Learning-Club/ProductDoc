@@ -1,0 +1,40 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Synesis logo">
+  <defs>
+    <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00d4ff" />
+      <stop offset="50%" stop-color="#5b9cf7" />
+      <stop offset="100%" stop-color="#8b6ef7" />
+    </linearGradient>
+    <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5ba0f7" />
+      <stop offset="50%" stop-color="#9b7af7" />
+      <stop offset="100%" stop-color="#c46bf7" />
+    </linearGradient>
+    <linearGradient id="blueStrokeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#40e8ff" />
+      <stop offset="50%" stop-color="#80b8ff" />
+      <stop offset="100%" stop-color="#a890ff" />
+    </linearGradient>
+    <linearGradient id="purpleStrokeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#80c0ff" />
+      <stop offset="50%" stop-color="#b898ff" />
+      <stop offset="100%" stop-color="#da8fff" />
+    </linearGradient>
+    <filter id="glowBlue" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    <filter id="glowPurple" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  <g filter="url(#glowBlue)">
+    <polygon points="100,42 110,91 158,100 110,109 100,158 90,109 42,100 90,91" fill="url(#blueGrad)" opacity="0.92" />
+    <polygon points="100,42 110,91 158,100 110,109 100,158 90,109 42,100 90,91" fill="none" stroke="url(#blueStrokeGrad)" stroke-width="1.5" opacity="0.7" />
+  </g>
+  <g transform="rotate(45 100 100)" filter="url(#glowPurple)">
+    <polygon points="100,42 110,91 158,100 110,109 100,158 90,109 42,100 90,91" fill="url(#purpleGrad)" opacity="0.85" />
+    <polygon points="100,42 110,91 158,100 110,109 100,158 90,109 42,100 90,91" fill="none" stroke="url(#purpleStrokeGrad)" stroke-width="1.5" opacity="0.65" />
+  </g>
+</svg>
