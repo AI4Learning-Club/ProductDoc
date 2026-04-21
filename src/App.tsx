@@ -8,10 +8,24 @@ import homeThemeDarkImage from './assets/home-theme-dark.png';
 import homeUserSettingsImage from './assets/home-user-settings.jpeg';
 import homeChatInputImage from './assets/home-chat-input.jpeg';
 import homeChatPromptsImage from './assets/home-chat-prompts.jpeg';
+import homeChatOverviewImage from './assets/home-chat-overview.jpeg';
 import homeRightPlanImage from './assets/home-right-plan.jpeg';
 import homeRightHeatImage from './assets/home-right-heat.jpeg';
 import homeSubjectSelectionImage from './assets/home-subject-selection.jpeg';
 import homeSubjectTopButtonImage from './assets/home-subject-top-button.jpeg';
+import homeGgbButtonImage from './assets/home-ggb-button.jpeg';
+import homeGgbPreviewEntryImage from './assets/home-ggb-preview-entry.jpeg';
+import homeGgb2dImage from './assets/home-ggb-2d.jpeg';
+import homeGgb3dImage from './assets/home-ggb-3d.jpeg';
+import homeManimButtonImage from './assets/home-manim-button.jpeg';
+import homeManimRenderImage from './assets/home-manim-render.jpeg';
+import homeFormulaButtonImage from './assets/home-formula-button.jpeg';
+import homeFormulaLibraryImage from './assets/home-formula-library.jpeg';
+import homeFormulaInsertImage from './assets/home-formula-insert.jpeg';
+import homeFormulaHandwritingImage from './assets/home-formula-handwriting.jpeg';
+import homeFileButtonImage from './assets/home-file-button.jpeg';
+import homeSettingsMenuImage from './assets/home-settings-menu.jpeg';
+import homeSettingsProfileImage from './assets/home-settings-profile.jpeg';
 
 type GuideSection = {
   id: string;
@@ -58,7 +72,7 @@ const guideSections: GuideSection[] = [
     actions: [
       '先选择学科。可以通过左侧栏中的“学科”进入选择，也可以通过页面右上方的“无学科”入口直接选择学科。',
       '确认当前学科已经切换成功，再开始后续提问、学习路径或计划相关操作。',
-      '查看中间主区域的输入框、快捷操作和学习打卡模块。',
+      '查看中间主区域的输入框与快捷操作入口。',
       '查看右侧信息栏中的学习目标、今日计划和学习热度。',
     ],
     tips: [
@@ -220,24 +234,13 @@ const homeSubsections: HomeSubsection[] = [
   },
   {
     id: 'home-image',
-    label: '插入图片',
-    title: '插入图片',
-    intro: '插入图片功能用于把题目截图、图形材料或板书照片带入当前学习流程，帮助 Synesis 基于视觉内容继续分析。',
+    label: '插入文件',
+    title: '插入文件',
+    intro: '插入文件功能用于把图片、文档或其他学习资料带入当前对话流程，帮助 Synesis 基于文件内容继续分析和处理。',
     bullets: [
-      '建议写清楚“适合上传什么类型的图片”。',
-      '可以强调图片插入后会进入当前对话上下文。',
-      '后续如有上传状态或识别效果图，可直接替换成截图展示。',
-    ],
-  },
-  {
-    id: 'home-checkin',
-    label: '学习打卡',
-    title: '学习打卡',
-    intro: '学习打卡模块位于主页下方，主要用于记录近期学习连续性，让用户快速感知自己的学习节奏和完成情况。',
-    bullets: [
-      '可说明打卡在主页中的位置和基本动作。',
-      '适合强调它与计划推进、学习习惯形成之间的关系。',
-      '如果后续规则更明确，可以再补充打卡成功后的状态变化。',
+      '适合上传题目截图、资料文件或需要结合上下文分析的学习内容。',
+      '文件插入后会进入当前对话上下文，便于继续围绕文件内容提问。',
+      '可用于配合讲解、分析、识别和整理等后续操作。',
     ],
   },
   {
@@ -302,6 +305,12 @@ function App() {
   const isHomeSection = activeSection.id === 'home';
   const isHomePageIntro = activeHomeSubsection.id === 'home-page-intro';
   const isHomeSubjectPage = activeHomeSubsection.id === 'home-subject';
+  const isHomeGgbPage = activeHomeSubsection.id === 'home-ggb';
+  const isHomeFormulaPage = activeHomeSubsection.id === 'home-formula';
+  const isHomeFilePage = activeHomeSubsection.id === 'home-image';
+  const isHomeSettingsPage = activeHomeSubsection.id === 'home-settings';
+  const isHomeChatPage = activeHomeSubsection.id === 'home-chat';
+  const isHomeManimPage = activeHomeSubsection.id === 'home-manim';
   const pageTitle = isHomeSection ? activeHomeSubsection.title : activeSection.title;
   const pageIntro = isHomeSection
     ? activeHomeSubsection.intro
@@ -404,7 +413,7 @@ function App() {
                         <p>主页由左侧栏、中间大区域和右侧栏组成。三个区域分别承担导航、学习交互和信息提醒功能，共同构成完整的主页使用体验。</p>
                         <ul>
                           <li>左侧栏集中放置页面导航、历史记录、主题切换和用户设置入口。</li>
-                          <li>中间大区域用于发起提问、使用快捷功能和查看学习打卡内容。</li>
+                          <li>中间大区域用于发起提问、使用快捷功能和组织当前学习任务。</li>
                           <li>右侧栏用于展示学习目标、今日计划和学习热度等提醒信息。</li>
                         </ul>
                       </article>
@@ -558,6 +567,390 @@ function App() {
                     </aside>
                   </div>
                 </>
+              ) : isHomeGgbPage ? (
+                <>
+                  <div className="help-doc-layout">
+                    <div className="help-doc-main">
+                      <article id="home-ggb-overview" className="help-content-card help-home-topic-card">
+                        <p className="help-section-mini">GGB 功能</p>
+                        <h3>仅数学学科支持使用 GGB</h3>
+                        <p>GGB 功能是主页中用于图形绘制和交互展示的数学专属能力。用户需要先切换到数学学科，再通过聊天框下方的 `GGB` 按钮进入相关流程。</p>
+                        <ul>
+                          <li>该功能仅在数学学科下提供，不同学科不会显示为主要绘图入口。</li>
+                          <li>适合用于几何构图、函数图像、立体图形和交互式数学探索。</li>
+                        </ul>
+                      </article>
+
+                      <article id="home-ggb-entry" className="help-content-card help-feature-card">
+                        <div className="help-feature-copy">
+                          <p className="help-section-mini">功能入口</p>
+                          <h3>点击聊天框下方的 GGB 按钮</h3>
+                          <p>用户在数学学科下进入主页后，可以通过聊天框下方的 `GGB` 按钮发起图形绘制请求，并让 Synesis 根据输入内容生成可交互的图形结果。</p>
+                          <ul>
+                            <li>`GGB` 按钮位于聊天框底部功能区，与其他辅助按钮并列显示。</li>
+                            <li>输入绘图需求后，可以进入生成与预览流程。</li>
+                          </ul>
+                        </div>
+                        <div className="help-theme-stack">
+                          <div className="help-image-placeholder help-inline-image-placeholder">
+                            <img className="help-inline-feature-image" src={homeGgbButtonImage} alt="聊天框下方的 GGB 按钮" />
+                          </div>
+                          <div className="help-image-placeholder help-inline-image-placeholder">
+                            <img className="help-inline-feature-image" src={homeGgbPreviewEntryImage} alt="GGB 生成功能预览入口" />
+                          </div>
+                        </div>
+                      </article>
+
+                      <article id="home-ggb-2d" className="help-content-card help-feature-card">
+                        <div className="help-feature-copy">
+                          <p className="help-section-mini">2D 图形</p>
+                          <h3>支持 2D 图形绘制</h3>
+                          <p>GGB 可以生成平面几何和函数类的 2D 图形，适合用于点、线、圆、角度关系和函数图像等内容的展示与验证。</p>
+                          <ul>
+                            <li>用户可以围绕题目条件生成对应图形，并继续观察图中关系。</li>
+                            <li>生成后的 2D 图形支持进一步调整和创作，不局限于一次性静态结果。</li>
+                          </ul>
+                        </div>
+                        <div className="help-image-placeholder help-inline-image-placeholder">
+                          <img className="help-inline-feature-image" src={homeGgb2dImage} alt="GGB 2D 图形预览" />
+                        </div>
+                      </article>
+
+                      <article id="home-ggb-3d" className="help-content-card help-feature-card">
+                        <div className="help-feature-copy">
+                          <p className="help-section-mini">3D 图形</p>
+                          <h3>支持 3D 图形绘制与动态展示</h3>
+                          <p>GGB 同样支持 3D 图形绘制，适合用来展示空间几何、立体结构和三维坐标关系。生成后的图形具有动态效果，用户可以继续操作、旋转和自由发挥创作。</p>
+                          <ul>
+                            <li>适合用于空间几何题、立体模型和三维关系的可视化表达。</li>
+                            <li>图形不是固定图片，而是可交互的动态对象，便于继续观察和修改。</li>
+                          </ul>
+                        </div>
+                        <div className="help-image-placeholder help-inline-image-placeholder">
+                          <img className="help-inline-feature-image" src={homeGgb3dImage} alt="GGB 3D 图形预览" />
+                        </div>
+                      </article>
+                    </div>
+
+                    <aside className="help-doc-toc">
+                      <p className="help-doc-toc-label">目录</p>
+                      <div className="help-doc-toc-list">
+                        <a href="#home-ggb-overview" className="help-doc-toc-link">GGB 概览</a>
+                        <a href="#home-ggb-entry" className="help-doc-toc-link">功能入口</a>
+                        <a href="#home-ggb-2d" className="help-doc-toc-link">2D 图形</a>
+                        <a href="#home-ggb-3d" className="help-doc-toc-link">3D 图形</a>
+                      </div>
+                    </aside>
+                  </div>
+                </>
+              ) : isHomeFormulaPage ? (
+                <>
+                  <div className="help-doc-layout">
+                    <div className="help-doc-main">
+                      <article id="home-formula-overview" className="help-content-card help-home-topic-card">
+                        <p className="help-section-mini">公式库功能</p>
+                        <h3>公式库包含基础公式与手写识别功能</h3>
+                        <p>公式库功能用于帮助用户快速查找本学科常用公式，并支持将手写公式自动识别为可编辑内容，方便继续插入到当前学习流程中使用。</p>
+                        <ul>
+                          <li>基础公式库适合快速查阅本学科常用公式与表达式。</li>
+                          <li>手写识别适合将纸面或手写输入内容转换为可继续编辑的公式结果。</li>
+                        </ul>
+                      </article>
+
+                      <article id="home-formula-entry" className="help-content-card help-feature-card">
+                        <div className="help-feature-copy">
+                          <p className="help-section-mini">功能入口</p>
+                          <h3>点击聊天框下方的公式库按钮</h3>
+                          <p>用户可以通过聊天框下方的公式库按钮进入公式面板，在这里切换查看基础公式库或使用手写识别功能。</p>
+                          <ul>
+                            <li>该按钮位于聊天框底部功能区，适合作为公式相关操作的统一入口。</li>
+                            <li>进入后可以在“公式库”和“手写识别”两个标签间切换。</li>
+                          </ul>
+                        </div>
+                        <div className="help-image-placeholder help-inline-image-placeholder">
+                          <img className="help-inline-feature-image" src={homeFormulaButtonImage} alt="聊天框下方的公式库按钮" />
+                        </div>
+                      </article>
+
+                      <article id="home-formula-library" className="help-content-card help-feature-card">
+                        <div className="help-feature-copy">
+                          <p className="help-section-mini">基础公式库</p>
+                          <h3>查看该学科会用到的基本公式</h3>
+                          <p>公式库会按照当前学科整理常用公式内容，用户可以在列表中查看对应章节的基础公式，并将需要的公式直接插入到当前使用场景中。</p>
+                          <ul>
+                            <li>适合在解题、复习或整理知识点时快速查找对应公式。</li>
+                            <li>点击某条公式后，可以查看公式内容及简要说明，并执行插入操作。</li>
+                          </ul>
+                        </div>
+                        <div className="help-theme-stack">
+                          <div className="help-image-placeholder help-inline-image-placeholder">
+                            <img className="help-inline-feature-image" src={homeFormulaLibraryImage} alt="基础公式库列表" />
+                          </div>
+                          <div className="help-image-placeholder help-inline-image-placeholder">
+                            <img className="help-inline-feature-image" src={homeFormulaInsertImage} alt="公式插入示意" />
+                          </div>
+                        </div>
+                      </article>
+
+                      <article id="home-formula-handwriting" className="help-content-card help-feature-card">
+                        <div className="help-feature-copy">
+                          <p className="help-section-mini">手写识别</p>
+                          <h3>支持手写公式自动识别</h3>
+                          <p>在“手写识别”标签下，用户可以书写公式内容，系统会自动识别并将结果转换为可继续编辑的数学表达式。</p>
+                          <ul>
+                            <li>适合处理键盘不方便直接输入的公式内容。</li>
+                            <li>识别结果会显示在下方区域，用户也可以继续手动编辑 LaTeX 表达式。</li>
+                          </ul>
+                        </div>
+                        <div className="help-image-placeholder help-inline-image-placeholder">
+                          <img className="help-inline-feature-image" src={homeFormulaHandwritingImage} alt="手写公式识别界面" />
+                        </div>
+                      </article>
+                    </div>
+
+                    <aside className="help-doc-toc">
+                      <p className="help-doc-toc-label">目录</p>
+                      <div className="help-doc-toc-list">
+                        <a href="#home-formula-overview" className="help-doc-toc-link">公式库概览</a>
+                        <a href="#home-formula-entry" className="help-doc-toc-link">功能入口</a>
+                        <a href="#home-formula-library" className="help-doc-toc-link">基础公式库</a>
+                        <a href="#home-formula-handwriting" className="help-doc-toc-link">手写识别</a>
+                      </div>
+                    </aside>
+                  </div>
+                </>
+              ) : isHomeFilePage ? (
+                <>
+                  <div className="help-doc-layout">
+                    <div className="help-doc-main">
+                      <article id="home-file-overview" className="help-content-card help-home-topic-card">
+                        <p className="help-section-mini">插入文件</p>
+                        <h3>通过插入文件补充学习材料</h3>
+                        <p>插入文件功能用于把图片、文档或其他学习资料带入当前对话流程，帮助 Synesis 基于文件内容继续分析、讲解和处理。</p>
+                        <ul>
+                          <li>适合在仅靠文字难以完整表达题目或资料内容时使用。</li>
+                          <li>文件进入当前对话后，用户可以继续围绕文件内容发起追问。</li>
+                        </ul>
+                      </article>
+
+                      <article id="home-file-entry" className="help-content-card help-feature-card">
+                        <div className="help-feature-copy">
+                          <p className="help-section-mini">功能入口</p>
+                          <h3>点击聊天框下方的插入文件按钮</h3>
+                          <p>用户可以通过聊天框下方的插入文件按钮，把需要分析的学习材料加入当前会话。按钮位于聊天框底部功能区，适合作为文件类输入的统一入口。</p>
+                          <ul>
+                            <li>可用于上传题目截图、练习材料、讲义内容或其他学习相关文件。</li>
+                            <li>文件插入后，Synesis 可以继续结合文件内容生成回答。</li>
+                          </ul>
+                        </div>
+                        <div className="help-image-placeholder help-inline-image-placeholder">
+                          <img className="help-inline-feature-image" src={homeFileButtonImage} alt="聊天框下方的插入文件按钮" />
+                        </div>
+                      </article>
+
+                      <article id="home-file-usage" className="help-content-card help-home-topic-card">
+                        <p className="help-section-mini">使用场景</p>
+                        <h3>适合配合题目、资料和图片内容使用</h3>
+                        <p>当用户需要让系统直接读取图像、文件或资料内容时，可以通过插入文件功能补充上下文，再继续进行讲解、分析和问答。</p>
+                        <ul>
+                          <li>适合处理题目截图、课堂笔记、资料片段和需要结合原始内容理解的问题。</li>
+                          <li>文件输入可以减少手动转写内容的步骤，提高提问效率。</li>
+                        </ul>
+                      </article>
+                    </div>
+
+                    <aside className="help-doc-toc">
+                      <p className="help-doc-toc-label">目录</p>
+                      <div className="help-doc-toc-list">
+                        <a href="#home-file-overview" className="help-doc-toc-link">插入文件概览</a>
+                        <a href="#home-file-entry" className="help-doc-toc-link">功能入口</a>
+                        <a href="#home-file-usage" className="help-doc-toc-link">使用场景</a>
+                      </div>
+                    </aside>
+                  </div>
+                </>
+              ) : isHomeSettingsPage ? (
+                <>
+                  <div className="help-doc-layout">
+                    <div className="help-doc-main">
+                      <article id="home-settings-overview" className="help-content-card help-home-topic-card">
+                        <p className="help-section-mini">个人设置</p>
+                        <h3>点击左下角账户进入个人设置</h3>
+                        <p>用户可以点击左下角的账户区域打开菜单，并从中进入个人设置相关页面。这里主要包含 `Account Settings` 和 `Help & Support` 两个常用入口。</p>
+                        <ul>
+                          <li>`Account Settings` 用于管理个人信息与账户资料。</li>
+                          <li>`Help & Support` 用于获取团队帮助与支持信息。</li>
+                        </ul>
+                      </article>
+
+                      <article id="home-settings-entry" className="help-content-card help-feature-card">
+                        <div className="help-feature-copy">
+                          <p className="help-section-mini">功能入口</p>
+                          <h3>通过左下角账户打开设置菜单</h3>
+                          <p>左下角账户区域是个人设置的统一入口。点击后可以展开菜单，并继续进入账户设置或帮助支持页面。</p>
+                          <ul>
+                            <li>适合在完成主页操作后进入个人资料与帮助相关内容。</li>
+                            <li>菜单中同时提供 `Account Settings`、`Help & Support` 和退出登录等选项。</li>
+                          </ul>
+                        </div>
+                        <div className="help-image-placeholder help-inline-image-placeholder">
+                          <img className="help-inline-feature-image" src={homeSettingsMenuImage} alt="左下角账户菜单" />
+                        </div>
+                      </article>
+
+                      <article id="home-settings-account" className="help-content-card help-feature-card">
+                        <div className="help-feature-copy">
+                          <p className="help-section-mini">Account Settings</p>
+                          <h3>设置个人信息</h3>
+                          <p>`Account Settings` 页面用于管理用户的个人资料和账户信息。用户可以在这里查看或修改头像、昵称、个人简介、学习目标和所在地等内容。</p>
+                          <ul>
+                            <li>适合用于维护个人资料和学习者展示信息。</li>
+                            <li>个人信息更新后，可以更好地匹配后续的个性化学习体验。</li>
+                          </ul>
+                        </div>
+                        <div className="help-image-placeholder help-inline-image-placeholder">
+                          <img className="help-inline-feature-image" src={homeSettingsProfileImage} alt="Account Settings 页面" />
+                        </div>
+                      </article>
+
+                      <article id="home-settings-support" className="help-content-card help-home-topic-card">
+                        <p className="help-section-mini">Help & Support</p>
+                        <h3>获取团队帮助与支持</h3>
+                        <p>`Help & Support` 用于帮助用户在使用过程中获取团队支持。当用户遇到问题、需要反馈或希望获得进一步帮助时，可以通过这一入口继续联系和获取说明。</p>
+                        <ul>
+                          <li>适合用于处理使用疑问、问题反馈和帮助获取。</li>
+                          <li>这一入口让用户能够在需要时快速找到支持渠道。</li>
+                        </ul>
+                      </article>
+                    </div>
+
+                    <aside className="help-doc-toc">
+                      <p className="help-doc-toc-label">目录</p>
+                      <div className="help-doc-toc-list">
+                        <a href="#home-settings-overview" className="help-doc-toc-link">个人设置概览</a>
+                        <a href="#home-settings-entry" className="help-doc-toc-link">功能入口</a>
+                        <a href="#home-settings-account" className="help-doc-toc-link">Account Settings</a>
+                        <a href="#home-settings-support" className="help-doc-toc-link">Help & Support</a>
+                      </div>
+                    </aside>
+                  </div>
+                </>
+              ) : isHomeChatPage ? (
+                <>
+                  <div className="help-doc-layout">
+                    <div className="help-doc-main">
+                      <article id="home-chat-overview" className="help-content-card help-home-topic-card">
+                        <p className="help-section-mini">与 Synesis 聊天</p>
+                        <h3>可以围绕学习问题持续对话</h3>
+                        <p>与 Synesis 聊天是用户最直接的学习入口。用户可以围绕题目、知识点、公式、做题思路、错题整理和复习规划等内容持续发起对话。</p>
+                        <ul>
+                          <li>适合在学习过程中随时提问、追问和继续展开某个主题。</li>
+                          <li>用户无需一次性把问题表达得非常完整，也可以通过连续对话逐步明确需求。</li>
+                        </ul>
+                      </article>
+
+                      <article id="home-chat-topics" className="help-content-card help-feature-card">
+                        <div className="help-feature-copy">
+                          <p className="help-section-mini">能聊什么</p>
+                          <h3>可以讨论题目、概念、公式和做题思路</h3>
+                          <p>Synesis 支持围绕不同类型的学习内容进行交流，不仅能回答单个问题，也能陪伴用户逐步推进理解和练习。</p>
+                          <ul>
+                            <li>可以聊题目讲解、知识概念、公式含义、解题思路和错题订正。</li>
+                            <li>也可以围绕某个章节、某类题型或一个学习目标持续展开讨论。</li>
+                          </ul>
+                        </div>
+                        <div className="help-image-placeholder help-inline-image-placeholder">
+                          <img className="help-inline-feature-image" src={homeChatOverviewImage} alt="Synesis 聊天示例" />
+                        </div>
+                      </article>
+
+                      <article id="home-chat-solutions" className="help-content-card help-home-topic-card">
+                        <p className="help-section-mini">能解决什么问题</p>
+                        <h3>帮助用户完成讲解、分析与学习推进</h3>
+                        <p>Synesis 不只是回答问题，还可以帮助用户把学习过程继续推进下去。无论是遇到不会做的题目，还是需要梳理概念、总结错题或组织复习，都可以通过聊天来完成。</p>
+                        <ul>
+                          <li>可以帮助用户理解题目、拆解步骤、澄清概念和定位错误原因。</li>
+                          <li>也可以用于整理知识点、生成学习思路，并辅助后续学习安排。</li>
+                        </ul>
+                      </article>
+                    </div>
+
+                    <aside className="help-doc-toc">
+                      <p className="help-doc-toc-label">目录</p>
+                      <div className="help-doc-toc-list">
+                        <a href="#home-chat-overview" className="help-doc-toc-link">聊天概览</a>
+                        <a href="#home-chat-topics" className="help-doc-toc-link">能聊什么</a>
+                        <a href="#home-chat-solutions" className="help-doc-toc-link">能解决什么问题</a>
+                      </div>
+                    </aside>
+                  </div>
+                </>
+              ) : isHomeManimPage ? (
+                <>
+                  <div className="help-doc-layout">
+                    <div className="help-doc-main">
+                      <article id="home-manim-overview" className="help-content-card help-home-topic-card">
+                        <p className="help-section-mini">Manim 功能</p>
+                        <h3>通过 Manim 生成为学习服务的视频内容</h3>
+                        <p>Manim 功能用于把题目讲解或概念解析转成视频内容，帮助用户通过更直观的动画方式理解过程和变化。</p>
+                        <ul>
+                          <li>适合处理需要通过动态演示来理解的学习内容。</li>
+                          <li>支持围绕题目讲解和概念解析生成对应视频。</li>
+                        </ul>
+                      </article>
+
+                      <article id="home-manim-entry" className="help-content-card help-feature-card">
+                        <div className="help-feature-copy">
+                          <p className="help-section-mini">启动入口</p>
+                          <h3>先点击聊天框下方的 Manim 按钮</h3>
+                          <p>用户需要先点击聊天框下方的 `Manim` 按钮启动 Manim 功能，然后再输入希望生成的视频内容。</p>
+                          <ul>
+                            <li>`Manim` 按钮位于聊天框底部功能区，与其他辅助按钮并列显示。</li>
+                            <li>启动后即可继续输入想要的视频讲解需求。</li>
+                          </ul>
+                        </div>
+                        <div className="help-image-placeholder help-inline-image-placeholder">
+                          <img className="help-inline-feature-image" src={homeManimButtonImage} alt="聊天框下方的 Manim 按钮" />
+                        </div>
+                      </article>
+
+                      <article id="home-manim-content" className="help-content-card help-home-topic-card">
+                        <p className="help-section-mini">支持内容</p>
+                        <h3>支持题目讲解和概念解析</h3>
+                        <p>在启动 Manim 后，用户可以直接输入希望生成的视频内容。例如某道题的讲解视频，或者某个知识概念的解析视频。</p>
+                        <ul>
+                          <li>适合将解题过程、变化过程和抽象概念转成更清晰的视频表达。</li>
+                          <li>用户可以根据自己的学习重点决定视频需要讲解的侧重点。</li>
+                        </ul>
+                      </article>
+
+                      <article id="home-manim-render" className="help-content-card help-feature-card">
+                        <div className="help-feature-copy">
+                          <p className="help-section-mini">生成过程</p>
+                          <h3>视频渲染时间较长，需要耐心等待</h3>
+                          <p>Manim 视频生成需要经过渲染过程，因此整体等待时间会比普通文本回答更长。用户提交需求后，可以在页面中查看当前生成状态。</p>
+                          <ul>
+                            <li>渲染过程会显示当前生成进度，便于了解任务状态。</li>
+                            <li>由于视频生成耗时较长，使用时需要适当耐心等待结果完成。</li>
+                          </ul>
+                        </div>
+                        <div className="help-image-placeholder help-inline-image-placeholder">
+                          <img className="help-inline-feature-image" src={homeManimRenderImage} alt="Manim 视频渲染过程" />
+                        </div>
+                      </article>
+                    </div>
+
+                    <aside className="help-doc-toc">
+                      <p className="help-doc-toc-label">目录</p>
+                      <div className="help-doc-toc-list">
+                        <a href="#home-manim-overview" className="help-doc-toc-link">Manim 概览</a>
+                        <a href="#home-manim-entry" className="help-doc-toc-link">启动入口</a>
+                        <a href="#home-manim-content" className="help-doc-toc-link">支持内容</a>
+                        <a href="#home-manim-render" className="help-doc-toc-link">生成过程</a>
+                      </div>
+                    </aside>
+                  </div>
+                </>
               ) : activeHomeSubsection.imageSrc ? (
                 <div className="help-image-placeholder hero-image">
                   <div className="help-image-canvas help-image-canvas-photo">
@@ -602,7 +995,7 @@ function App() {
                         <li>左侧第一个按钮可用于调用 Manim 相关能力，适合需要数学动画或动态演示的内容。</li>
                         <li>第二个按钮用于调用公式库能力，适合快速查找、引用或整理公式。</li>
                         <li>第三个按钮用于调用 GGB 功能，适合几何构图、函数图像和交互式探索。</li>
-                        <li>第四个按钮用于插入图片，适合上传题目截图、图形材料或板书照片。</li>
+                        <li>第四个按钮用于插入文件，适合上传题目截图、资料文件或其他学习材料。</li>
                         <li>右侧“开启思考”按钮用于切换更强调推理过程的回答方式，适合需要更完整分析步骤的问题。</li>
                       </ul>
                     </div>
@@ -664,7 +1057,7 @@ function App() {
                     </div>
                   </article>
                 </div>
-              ) : !isHomeSubjectPage ? (
+              ) : !isHomeSubjectPage && !isHomeGgbPage && !isHomeFormulaPage && !isHomeFilePage && !isHomeSettingsPage && !isHomeChatPage && !isHomeManimPage ? (
                 <article className="help-content-card help-home-topic-card">
                   <p className="help-section-mini">{activeHomeSubsection.label}</p>
                   <h3>{activeHomeSubsection.title}</h3>
