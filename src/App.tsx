@@ -26,6 +26,19 @@ import homeFormulaHandwritingImage from './assets/home-formula-handwriting.jpeg'
 import homeFileButtonImage from './assets/home-file-button.jpeg';
 import homeSettingsMenuImage from './assets/home-settings-menu.jpeg';
 import homeSettingsProfileImage from './assets/home-settings-profile.jpeg';
+import notesCreateSidebarImage from './assets/notes-create-sidebar-entry.jpeg';
+import notesCreateTagImage from './assets/notes-create-tag-import.jpeg';
+import notesCreateSelectionImage from './assets/notes-create-selection.jpeg';
+import notesUsageSearchImage from './assets/notes-usage-search.jpeg';
+import notesUsageExportImage from './assets/notes-usage-export-pdf.jpeg';
+import learningPathModeSelectImage from './assets/learning-path-mode-select.jpeg';
+import learningPathManualToolbarImage from './assets/learning-path-manual-toolbar.jpeg';
+import learningPathManualStructureImage from './assets/learning-path-manual-structure.jpeg';
+import learningPathSmartStepOneImage from './assets/learning-path-smart-step-1.jpeg';
+import learningPathSmartStepTwoImage from './assets/learning-path-smart-step-2.jpeg';
+import learningPathSmartStepThreeImage from './assets/learning-path-smart-step-3.jpeg';
+import learningPathSmartConfirmDraftImage from './assets/learning-path-smart-confirm-draft.jpeg';
+import learningPathSmartResultImage from './assets/learning-path-smart-result.jpeg';
 
 type GuideSection = {
   id: string;
@@ -255,7 +268,68 @@ const homeSubsections: HomeSubsection[] = [
     ],
   },
 ];
+const notesSubsections: HomeSubsection[] = [
+  {
+    id: 'notes-create',
+    label: '笔记创建',
+    title: '笔记创建',
+    intro: '智能笔记支持把当前学习过程中的重点内容沉淀为结构化笔记，方便后续持续补充与回看。',
+    bullets: [
+      '可以从智能笔记模块中直接发起新建笔记。',
+      '也可以在聊天、学习路径或计划总结等使用过程中，把值得保留的内容进一步整理到笔记里。',
+      '创建时建议优先围绕一个明确主题，避免把过多零散内容混在同一篇笔记中。',
+    ],
+  },
+  {
+    id: 'notes-usage',
+    label: '使用方法',
+    title: '使用方法',
+    intro: '创建完成后，智能笔记既可以作为阶段性学习记录，也可以作为后续复习、整理和查找的重要资料入口。',
+    bullets: [
+      '可以回看已保存的重点内容，并继续补充理解、例题和结论。',
+      '适合在复习前快速浏览关键知识点，帮助用户恢复上下文。',
+      '建议把笔记和学习路径、每日计划配合使用，让记录、执行和复习形成连续闭环。',
+    ],
+  },
+];
+const learningPathSubsections: HomeSubsection[] = [
+  {
+    id: 'learning-path-manual',
+    label: '手动生成',
+    title: '手动生成',
+    intro: '学习路径支持用户手动编辑路径结构，适合在已有思路基础上自行搭建知识框架。',
+    bullets: [
+      '支持围绕当前节点继续补充下级节点与平级节点。',
+      '支持自动平和布局，帮助整体结构更清晰。',
+      '支持删除不需要的节点，方便随时调整路径。',
+    ],
+  },
+  {
+    id: 'learning-path-smart',
+    label: '智能生成',
+    title: '智能生成',
+    intro: '智能生成适合快速搭建学习路径草稿，用户可以沿着系统步骤逐步确认后再执行生成。',
+    bullets: [
+      '按照页面流程逐步输入主题、范围与生成要求。',
+      '在最终确认前，可以补充用户自己的想法和目标。',
+      '生成后仍可继续手动调整，使路径更贴合个人计划。',
+    ],
+  },
+  {
+    id: 'learning-path-recommendation',
+    label: '建议使用方式',
+    title: '建议使用方式',
+    intro: '建议先借助智能生成得到一版基础路径，再结合 Synesis 的输出与自己的计划继续修正。',
+    bullets: [
+      '先用智能生成快速建立初始框架。',
+      '在确认执行前，结合 Synesis 输出补充自己的学习想法。',
+      '生成完成后，再根据个人节奏和计划手动调整学习路径。',
+    ],
+  },
+];
 const defaultHomeSubsectionId = homeSubsections[0].id;
+const defaultNotesSubsectionId = notesSubsections[0].id;
+const defaultLearningPathSubsectionId = learningPathSubsections[0].id;
 const defaultSectionId = guideSections[0].id;
 
 const getHashValue = (): string => {
@@ -276,6 +350,16 @@ const getHomeSubsectionFromHash = (hash: string): HomeSubsection => {
   return matchedSubsection ?? homeSubsections[0];
 };
 
+const getNotesSubsectionFromHash = (hash: string): HomeSubsection => {
+  const matchedSubsection = notesSubsections.find((item) => item.id === hash);
+  return matchedSubsection ?? notesSubsections[0];
+};
+
+const getLearningPathSubsectionFromHash = (hash: string): HomeSubsection => {
+  const matchedSubsection = learningPathSubsections.find((item) => item.id === hash);
+  return matchedSubsection ?? learningPathSubsections[0];
+};
+
 function App() {
   const [currentHash, setCurrentHash] = useState<string>(getHashValue);
 
@@ -293,6 +377,12 @@ function App() {
     if (currentHash === '' || currentHash === 'home') {
       window.location.replace(`#${defaultHomeSubsectionId}`);
     }
+    if (currentHash === 'learning-path') {
+      window.location.replace(`#${defaultLearningPathSubsectionId}`);
+    }
+    if (currentHash === 'notes') {
+      window.location.replace(`#${defaultNotesSubsectionId}`);
+    }
   }, [currentHash]);
 
   const activeSectionId = useMemo(() => getSectionFromHash(currentHash), [currentHash]);
@@ -301,8 +391,15 @@ function App() {
     [activeSectionId],
   );
   const activeHomeSubsection = useMemo(() => getHomeSubsectionFromHash(currentHash), [currentHash]);
+  const activeNotesSubsection = useMemo(() => getNotesSubsectionFromHash(currentHash), [currentHash]);
+  const activeLearningPathSubsection = useMemo(
+    () => getLearningPathSubsectionFromHash(currentHash),
+    [currentHash],
+  );
   const ActiveIcon = activeSection.icon;
   const isHomeSection = activeSection.id === 'home';
+  const isLearningPathSection = activeSection.id === 'learning-path';
+  const isNotesSection = activeSection.id === 'notes';
   const isHomePageIntro = activeHomeSubsection.id === 'home-page-intro';
   const isHomeSubjectPage = activeHomeSubsection.id === 'home-subject';
   const isHomeGgbPage = activeHomeSubsection.id === 'home-ggb';
@@ -311,9 +408,16 @@ function App() {
   const isHomeSettingsPage = activeHomeSubsection.id === 'home-settings';
   const isHomeChatPage = activeHomeSubsection.id === 'home-chat';
   const isHomeManimPage = activeHomeSubsection.id === 'home-manim';
-  const pageTitle = isHomeSection ? activeHomeSubsection.title : activeSection.title;
-  const pageIntro = isHomeSection
-    ? activeHomeSubsection.intro
+  const activeSubsection = isHomeSection
+    ? activeHomeSubsection
+    : isLearningPathSection
+      ? activeLearningPathSubsection
+    : isNotesSection
+      ? activeNotesSubsection
+      : null;
+  const pageTitle = activeSubsection ? activeSubsection.title : activeSection.title;
+  const pageIntro = activeSubsection
+    ? activeSubsection.intro
     : '当前页面采用分页面说明结构。点击左侧目录或顶部导航后，会直接切换到对应说明页，而不是继续在同一页面里堆叠内容。';
 
   return (
@@ -334,7 +438,15 @@ function App() {
             {guideSections.map((section) => (
               <a
                 key={section.id}
-                href={section.id === 'home' ? `#${defaultHomeSubsectionId}` : `#${section.id}`}
+                href={
+                  section.id === 'home'
+                    ? `#${defaultHomeSubsectionId}`
+                    : section.id === 'learning-path'
+                      ? `#${defaultLearningPathSubsectionId}`
+                    : section.id === 'notes'
+                      ? `#${defaultNotesSubsectionId}`
+                      : `#${section.id}`
+                }
                 className={section.id === activeSection.id ? 'is-active' : ''}
               >
                 {section.navLabel}
@@ -354,7 +466,15 @@ function App() {
                 return (
                   <a
                     key={section.id}
-                    href={section.id === 'home' ? `#${defaultHomeSubsectionId}` : `#${section.id}`}
+                    href={
+                      section.id === 'home'
+                        ? `#${defaultHomeSubsectionId}`
+                        : section.id === 'learning-path'
+                          ? `#${defaultLearningPathSubsectionId}`
+                        : section.id === 'notes'
+                          ? `#${defaultNotesSubsectionId}`
+                          : `#${section.id}`
+                    }
                     className={`help-sidebar-link ${section.id === activeSection.id ? 'is-active' : ''}`}
                   >
                     <Icon size={16} />
@@ -364,15 +484,31 @@ function App() {
               })}
             </div>
 
-            {isHomeSection ? (
+            {isHomeSection || isLearningPathSection || isNotesSection ? (
               <div className="help-sidebar-subnav-group">
-                <p className="help-sidebar-label">主页目录</p>
+                <p className="help-sidebar-label">
+                  {isHomeSection ? '主页目录' : isLearningPathSection ? '学习路径目录' : '智能笔记目录'}
+                </p>
                 <div className="help-sidebar-subnav">
-                  {homeSubsections.map((item) => (
+                  {(isHomeSection
+                    ? homeSubsections
+                    : isLearningPathSection
+                      ? learningPathSubsections
+                      : notesSubsections).map((item) => (
                     <a
                       key={item.id}
                       href={`#${item.id}`}
-                      className={`help-sidebar-sublink ${item.id === activeHomeSubsection.id ? 'is-active' : ''}`}
+                      className={`help-sidebar-sublink ${
+                        item.id === (
+                          isHomeSection
+                            ? activeHomeSubsection.id
+                            : isLearningPathSection
+                              ? activeLearningPathSubsection.id
+                              : activeNotesSubsection.id
+                        )
+                          ? 'is-active'
+                          : ''
+                      }`}
                     >
                       {item.label}
                     </a>
@@ -386,12 +522,12 @@ function App() {
         <main className="help-main">
           <div className="help-breadcrumb">
             帮助文档 &nbsp;&gt;&nbsp; 产品使用说明 &nbsp;&gt;&nbsp; Synesis &nbsp;&gt;&nbsp; {activeSection.navLabel}
-            {isHomeSection ? `  >  ${activeHomeSubsection.label}` : ''}
+            {activeSubsection ? `  >  ${activeSubsection.label}` : ''}
           </div>
 
           <section className="help-hero">
             <p className="help-kicker">How To Use Synesis</p>
-            <h1 className={isHomeSection ? 'help-hero-title-subpage' : undefined}>{pageTitle}</h1>
+            <h1 className={activeSubsection ? 'help-hero-title-subpage' : undefined}>{pageTitle}</h1>
             <p className="help-hero-copy">{pageIntro}</p>
           </section>
 
@@ -1072,7 +1208,507 @@ function App() {
             </section>
           ) : null}
 
-          {!isHomeSection ? (
+          {isNotesSection ? (
+            <section className="help-overview">
+              {activeNotesSubsection.id === 'notes-create' ? (
+                <div className="help-doc-layout">
+                  <div className="help-doc-main">
+                    <article id="notes-create-overview" className="help-content-card help-home-topic-card">
+                      <p className="help-section-mini">笔记创建</p>
+                      <h3>智能笔记支持三种创建方式</h3>
+                      <p>
+                        用户可以直接进入智能笔记新建内容，也可以在与 Synesis 的对话过程中把完整回复或局部重点内容沉淀到笔记中，让记录动作尽量发生在学习当下。
+                      </p>
+                      <ul>
+                        <li>支持从左侧导航直接进入智能笔记并开始创建。</li>
+                        <li>支持对 Synesis 的整条回复一键加入笔记。</li>
+                        <li>支持选中回复中的部分内容，通过划词工具条摘录到笔记。</li>
+                      </ul>
+                    </article>
+
+                    <article id="notes-create-sidebar-entry" className="help-content-card help-feature-card">
+                      <div className="help-feature-copy">
+                        <p className="help-section-mini">方式一</p>
+                        <h3>点击左侧“笔记创建”，自动跳转到智能笔记</h3>
+                        <p>
+                          用户可以通过左侧导航进入智能笔记模块，进入后可直接开始新建笔记。这种方式适合已经明确要整理内容，准备集中编写或补充笔记的场景。
+                        </p>
+                        <ul>
+                          <li>适合从产品主流程中主动进入笔记区域，进行系统整理。</li>
+                          <li>进入智能笔记后，可围绕当前主题持续编辑、补充和回看。</li>
+                        </ul>
+                      </div>
+                      <div className="help-image-placeholder help-inline-image-placeholder">
+                        <img className="help-inline-feature-image" src={notesCreateSidebarImage} alt="从左侧导航进入智能笔记并创建笔记" />
+                      </div>
+                    </article>
+
+                    <article id="notes-create-tag-import" className="help-content-card help-feature-card">
+                      <div className="help-feature-copy">
+                        <p className="help-section-mini">方式二</p>
+                        <h3>点击 Synesis 回复旁的小标签，整条内容自动导入笔记</h3>
+                        <p>
+                          在 Synesis 的回复区域中，如果当前回复内容适合沉淀为笔记，可以直接点击消息旁的“加入笔记”小标签，将整条回复快速导入智能笔记，无需手动复制整理。
+                        </p>
+                        <ul>
+                          <li>适合整段解释、总结结论或完整解题思路的保存。</li>
+                          <li>可以减少重复复制内容的步骤，让对话结果更快沉淀下来。</li>
+                        </ul>
+                      </div>
+                      <div className="help-image-placeholder help-inline-image-placeholder">
+                        <img className="help-inline-feature-image" src={notesCreateTagImage} alt="点击回复旁的小标签自动导入笔记" />
+                      </div>
+                    </article>
+
+                    <article id="notes-create-selection" className="help-content-card help-feature-card">
+                      <div className="help-feature-copy">
+                        <p className="help-section-mini">方式三</p>
+                        <h3>选中 Synesis 回复中的部分内容，摘录加入笔记</h3>
+                        <p>
+                          当用户只想保留回复中的某一段重点内容时，可以直接按住并选中该部分文本。选中后会出现摘录工具条，点击后即可把局部内容加入智能笔记。
+                        </p>
+                        <ul>
+                          <li>适合保留定义、关键步骤、易错点或一句高价值结论。</li>
+                          <li>相比整条导入，更适合做精简摘录和重点整理。</li>
+                        </ul>
+                      </div>
+                      <div className="help-image-placeholder help-inline-image-placeholder">
+                        <img className="help-inline-feature-image" src={notesCreateSelectionImage} alt="划词选择部分 Synesis 回复并加入笔记" />
+                      </div>
+                    </article>
+                  </div>
+
+                  <aside className="help-doc-toc">
+                    <p className="help-doc-toc-label">目录</p>
+                    <div className="help-doc-toc-list">
+                      <a href="#notes-create-overview" className="help-doc-toc-link">笔记创建概览</a>
+                      <a href="#notes-create-sidebar-entry" className="help-doc-toc-link">左侧入口创建</a>
+                      <a href="#notes-create-tag-import" className="help-doc-toc-link">整条回复导入</a>
+                      <a href="#notes-create-selection" className="help-doc-toc-link">划词摘录加入</a>
+                    </div>
+                  </aside>
+                </div>
+              ) : activeNotesSubsection.id === 'notes-usage' ? (
+                <div className="help-doc-layout">
+                  <div className="help-doc-main">
+                    <article id="notes-usage-overview" className="help-content-card help-home-topic-card">
+                      <p className="help-section-mini">使用方法</p>
+                      <h3>智能笔记适合长期保存、持续整理和后续输出</h3>
+                      <p>
+                        智能笔记不是一次性记录工具，而是用户在学习过程中持续沉淀内容的长期空间。创建后的笔记会被保留下来，用户可以在后续学习中不断补充、修改、检索和导出。
+                      </p>
+                      <ul>
+                        <li>笔记内容会长期保存，方便反复回看和继续积累。</li>
+                        <li>支持自由增删修改，适合把零散学习结果逐步整理成稳定资料。</li>
+                        <li>支持搜索和导出 PDF，便于后续复习、打印和实体使用。</li>
+                      </ul>
+                    </article>
+
+                    <article id="notes-usage-storage" className="help-content-card help-feature-card">
+                      <div className="help-feature-copy">
+                        <p className="help-section-mini">长期保存</p>
+                        <h3>笔记会被持续保留，方便后续反复使用</h3>
+                        <p>
+                          用户创建完成的笔记不会因为一次学习结束而消失，而是会作为长期资料保留下来。后续无论是回顾旧知识、继续补充内容，还是整理阶段总结，都可以直接基于已有笔记继续推进。
+                        </p>
+                        <ul>
+                          <li>适合把一次次对话结果沉淀成长期可复用的学习资料。</li>
+                          <li>用户无需重复整理同样内容，可以在原有笔记基础上持续完善。</li>
+                        </ul>
+                      </div>
+                    </article>
+
+                    <article id="notes-usage-edit" className="help-content-card help-feature-card">
+                      <div className="help-feature-copy">
+                        <p className="help-section-mini">编辑管理</p>
+                        <h3>支持自由增删修改，笔记可以持续更新</h3>
+                        <p>
+                          智能笔记支持用户按自己的需要自由调整内容。无论是补充新的理解、删除无用片段，还是修改标题与正文，都可以直接在笔记区域中完成，让笔记随着学习过程不断演进。
+                        </p>
+                        <ul>
+                          <li>适合把初始摘录逐步整理成更清晰、更完整的个人版本。</li>
+                          <li>编辑后的内容可继续作为复习、总结和输出的基础材料。</li>
+                        </ul>
+                      </div>
+                    </article>
+
+                    <article id="notes-usage-search" className="help-content-card help-feature-card">
+                      <div className="help-feature-copy">
+                        <p className="help-section-mini">搜索查找</p>
+                        <h3>支持按标题和内容搜索，快速定位已有笔记</h3>
+                        <p>
+                          当笔记数量逐渐增多后，用户可以通过搜索功能快速查找需要的记录内容。无论是按标题回找某篇笔记，还是按正文关键词检索过去保存的知识点，都能更高效地定位目标资料。
+                        </p>
+                        <ul>
+                          <li>适合在复习前快速找回某个知识点、题型或历史总结。</li>
+                          <li>也方便在已有笔记中继续补充，而不是重复新建相似内容。</li>
+                        </ul>
+                      </div>
+                      <div className="help-image-placeholder help-inline-image-placeholder">
+                        <img className="help-inline-feature-image" src={notesUsageSearchImage} alt="智能笔记中的搜索笔记功能" />
+                      </div>
+                    </article>
+
+                    <article id="notes-usage-export" className="help-content-card help-feature-card">
+                      <div className="help-feature-copy">
+                        <p className="help-section-mini">导出 PDF</p>
+                        <h3>支持导出为 PDF，方便打印和线下实体使用</h3>
+                        <p>
+                          用户可以将当前笔记导出为 PDF 文件，便于后续打印、归档或在线下场景中继续使用。对于希望把电子笔记转成纸质资料进行复习、批注和携带的用户来说，这一能力会更加方便。
+                        </p>
+                        <ul>
+                          <li>适合在考试前、阶段复习前或集中整理后导出成实体资料。</li>
+                          <li>导出后的 PDF 更方便打印、分享和离线阅读。</li>
+                        </ul>
+                      </div>
+                      <div className="help-image-placeholder help-inline-image-placeholder">
+                        <img className="help-inline-feature-image" src={notesUsageExportImage} alt="智能笔记导出为 PDF" />
+                      </div>
+                    </article>
+                  </div>
+
+                  <aside className="help-doc-toc">
+                    <p className="help-doc-toc-label">目录</p>
+                    <div className="help-doc-toc-list">
+                      <a href="#notes-usage-overview" className="help-doc-toc-link">使用方法概览</a>
+                      <a href="#notes-usage-storage" className="help-doc-toc-link">长期保存</a>
+                      <a href="#notes-usage-edit" className="help-doc-toc-link">增删修改</a>
+                      <a href="#notes-usage-search" className="help-doc-toc-link">搜索查找</a>
+                      <a href="#notes-usage-export" className="help-doc-toc-link">导出 PDF</a>
+                    </div>
+                  </aside>
+                </div>
+              ) : (
+                <article className="help-content-card help-home-topic-card">
+                  <p className="help-section-mini">{activeNotesSubsection.label}</p>
+                  <h3>{activeNotesSubsection.title}</h3>
+                  <p>{activeNotesSubsection.intro}</p>
+                  <ul>
+                    {activeNotesSubsection.bullets.map((bullet) => (
+                      <li key={bullet}>{bullet}</li>
+                    ))}
+                  </ul>
+                </article>
+              )}
+            </section>
+          ) : null}
+
+          {isLearningPathSection ? (
+            <section className="help-overview">
+              {activeLearningPathSubsection.id === 'learning-path-manual' ? (
+                <div className="help-doc-layout">
+                  <div className="help-doc-main">
+                    <article id="learning-path-manual-overview" className="help-content-card help-home-topic-card">
+                      <p className="help-section-mini">手动生成</p>
+                      <h3>手动编辑学习路径，适合按自己的思路逐步搭建</h3>
+                      <p>
+                        手动生成适合已经有大致学习框架的用户。用户可以围绕当前路径节点自行补充新节点、调整结构并删除不需要的内容，让学习路径更贴近自己的理解方式。
+                      </p>
+                      <ul>
+                        <li>可以围绕已有节点继续扩展路径结构。</li>
+                        <li>适合边思考边调整，逐步完善知识框架。</li>
+                        <li>生成后的结构也更容易和个人计划保持一致。</li>
+                      </ul>
+                    </article>
+
+                    <article id="learning-path-manual-mode" className="help-content-card help-feature-card">
+                      <div className="help-feature-copy">
+                        <p className="help-section-mini">左上角选择</p>
+                        <h3>先在左上角选择“手动创建”进入手动生成模式</h3>
+                        <p>
+                          学习路径支持在左上角切换“智能生成”和“手动创建”。如果用户已经有比较明确的结构思路，可以先切换到手动创建，再围绕当前图谱自行补充和调整路径内容。
+                        </p>
+                        <ul>
+                          <li>适合已经有初步思路，想直接手动搭建路径的场景。</li>
+                          <li>进入后可继续围绕当前图谱进行节点编辑与结构调整。</li>
+                        </ul>
+                      </div>
+                      <div className="help-image-placeholder help-inline-image-placeholder">
+                        <img className="help-inline-feature-image" src={learningPathModeSelectImage} alt="学习路径左上角选择手动创建" />
+                      </div>
+                    </article>
+
+                    <article id="learning-path-manual-toolbar" className="help-content-card help-feature-card">
+                      <div className="help-feature-copy">
+                        <p className="help-section-mini">顶部操作区</p>
+                        <h3>顶部工具栏提供下级节点、平级节点、自动调整布局和删除选中</h3>
+                        <p>
+                          进入手动创建后，用户可以直接通过顶部工具栏管理学习路径结构。这里集中放置了常用的编辑按钮，方便在搭建过程中快速补充和修正节点。
+                        </p>
+                        <ul>
+                          <li>下级节点：围绕当前节点继续向下细化内容。</li>
+                          <li>平级节点：补充与当前节点同一层级的并列内容。</li>
+                          <li>自动调整布局：重新整理整体图谱排布。</li>
+                          <li>删除选中：移除当前不需要的节点。</li>
+                        </ul>
+                      </div>
+                      <div className="help-image-placeholder help-inline-image-placeholder">
+                        <img className="help-inline-feature-image" src={learningPathManualToolbarImage} alt="学习路径手动创建顶部工具栏" />
+                      </div>
+                    </article>
+
+                    <article id="learning-path-manual-child" className="help-content-card help-feature-card">
+                      <div className="help-feature-copy">
+                        <p className="help-section-mini">下级节点</p>
+                        <h3>通过顶层节点继续补充下级节点</h3>
+                        <p>
+                          用户可以从当前顶层节点继续向下扩展，把某个较大的学习主题拆成更具体的下级知识点或步骤。这样可以帮助学习路径从总体方向逐步细化到可执行层面。
+                        </p>
+                        <ul>
+                          <li>适合把抽象主题继续拆解成更具体的小模块。</li>
+                          <li>有助于形成更有层级感的学习路径结构。</li>
+                        </ul>
+                      </div>
+                      <div className="help-image-placeholder help-inline-image-placeholder">
+                        <img className="help-inline-feature-image" src={learningPathManualStructureImage} alt="学习路径中补充下级节点" />
+                      </div>
+                    </article>
+
+                    <article id="learning-path-manual-sibling" className="help-content-card help-feature-card">
+                      <div className="help-feature-copy">
+                        <p className="help-section-mini">平级节点</p>
+                        <h3>在同一层级补充平级节点</h3>
+                        <p>
+                          如果某个阶段下还有并列的重要内容，用户可以直接补充平级节点。这样更适合表达同一层次上的多个并行学习主题，避免误把并列关系写成上下级关系。
+                        </p>
+                        <ul>
+                          <li>适合同一阶段内并列存在的多个知识模块。</li>
+                          <li>能让学习路径的结构关系更准确、更清晰。</li>
+                        </ul>
+                      </div>
+                      <div className="help-image-placeholder help-inline-image-placeholder">
+                        <img className="help-inline-feature-image" src={learningPathManualStructureImage} alt="学习路径中补充平级节点" />
+                      </div>
+                    </article>
+
+                    <article id="learning-path-manual-layout" className="help-content-card help-feature-card">
+                      <div className="help-feature-copy">
+                        <p className="help-section-mini">自动平和布局</p>
+                        <h3>使用自动平和布局整理整体结构</h3>
+                        <p>
+                          当路径节点逐渐变多后，用户可以借助自动平和布局让整体结构重新排布，使各层级关系更容易阅读和理解。这有助于在继续编辑前先把结构整理清楚。
+                        </p>
+                        <ul>
+                          <li>适合在节点增多后快速整理视觉布局。</li>
+                          <li>有助于用户从全局视角查看当前学习路径结构。</li>
+                        </ul>
+                      </div>
+                      <div className="help-image-placeholder help-inline-image-placeholder">
+                        <img className="help-inline-feature-image" src={learningPathManualToolbarImage} alt="学习路径自动调整布局功能" />
+                      </div>
+                    </article>
+
+                    <article id="learning-path-manual-delete" className="help-content-card help-feature-card">
+                      <div className="help-feature-copy">
+                        <p className="help-section-mini">删除节点</p>
+                        <h3>删除不需要的节点，持续修正路径内容</h3>
+                        <p>
+                          如果某个节点不再需要，或者当前结构需要重新调整，用户可以直接删除对应节点。这样可以避免路径越来越冗余，也方便在生成后继续做个性化修正。
+                        </p>
+                        <ul>
+                          <li>适合清理重复、无关或不再需要的内容。</li>
+                          <li>让学习路径在反复调整中保持简洁和可执行。</li>
+                        </ul>
+                      </div>
+                      <div className="help-image-placeholder help-inline-image-placeholder">
+                        <img className="help-inline-feature-image" src={learningPathManualToolbarImage} alt="学习路径删除节点按钮" />
+                      </div>
+                    </article>
+                  </div>
+
+                  <aside className="help-doc-toc">
+                    <p className="help-doc-toc-label">目录</p>
+                    <div className="help-doc-toc-list">
+                      <a href="#learning-path-manual-overview" className="help-doc-toc-link">手动生成概览</a>
+                      <a href="#learning-path-manual-mode" className="help-doc-toc-link">左上角选择</a>
+                      <a href="#learning-path-manual-toolbar" className="help-doc-toc-link">顶部操作区</a>
+                      <a href="#learning-path-manual-child" className="help-doc-toc-link">下级节点</a>
+                      <a href="#learning-path-manual-sibling" className="help-doc-toc-link">平级节点</a>
+                      <a href="#learning-path-manual-layout" className="help-doc-toc-link">自动平和布局</a>
+                      <a href="#learning-path-manual-delete" className="help-doc-toc-link">删除节点</a>
+                    </div>
+                  </aside>
+                </div>
+              ) : activeLearningPathSubsection.id === 'learning-path-smart' ? (
+                <div className="help-doc-layout">
+                  <div className="help-doc-main">
+                    <article id="learning-path-smart-overview" className="help-content-card help-home-topic-card">
+                      <p className="help-section-mini">智能生成</p>
+                      <h3>按照页面步骤逐步确认后，快速生成学习路径</h3>
+                      <p>
+                        智能生成适合希望快速获得一版学习路径草稿的用户。用户可以按照页面中的流程逐步输入主题、范围和目标，再在确认执行前补充自己的想法，最后生成学习路径结果。
+                      </p>
+                      <ul>
+                        <li>适合从零开始快速建立一版基础路径。</li>
+                        <li>可以结合系统步骤逐步明确学习范围和目标。</li>
+                        <li>在确认前保留人工补充空间，让结果更贴合个人需求。</li>
+                      </ul>
+                    </article>
+
+                    <article id="learning-path-smart-mode" className="help-content-card help-feature-card">
+                      <div className="help-feature-copy">
+                        <p className="help-section-mini">左上角选择</p>
+                        <h3>先在左上角选择“智能生成”进入流程</h3>
+                        <p>
+                          如果用户希望系统先给出一版学习路径草稿，可以在左上角切换到“智能生成”。进入后页面会按步骤引导输入学习内容、偏好和个性化要求。
+                        </p>
+                        <ul>
+                          <li>适合从零开始快速生成一版学习路径。</li>
+                          <li>后续仍然可以结合个人想法继续补充与修正。</li>
+                        </ul>
+                      </div>
+                      <div className="help-image-placeholder help-inline-image-placeholder">
+                        <img className="help-inline-feature-image" src={learningPathModeSelectImage} alt="学习路径左上角选择智能生成" />
+                      </div>
+                    </article>
+
+                    <article id="learning-path-smart-step-one" className="help-content-card help-feature-card">
+                      <div className="help-feature-copy">
+                        <p className="help-section-mini">第一步</p>
+                        <h3>先填写学习内容与具体主题</h3>
+                        <p>
+                          在第一步中，用户需要先确定学习科目和具体学习内容，例如某个章节、某类题型或某一知识主题。这个输入会成为后续路径生成的基础。
+                        </p>
+                        <ul>
+                          <li>建议尽量明确主题范围，避免输入过于宽泛。</li>
+                          <li>主题越清晰，生成出的学习路径通常越贴合目标。</li>
+                        </ul>
+                      </div>
+                      <div className="help-image-placeholder help-inline-image-placeholder">
+                        <img className="help-inline-feature-image" src={learningPathSmartStepOneImage} alt="学习路径智能生成第一步" />
+                      </div>
+                    </article>
+
+                    <article id="learning-path-smart-step-two" className="help-content-card help-feature-card">
+                      <div className="help-feature-copy">
+                        <p className="help-section-mini">第二步</p>
+                        <h3>继续设置学习偏好、难度级别和学习目标</h3>
+                        <p>
+                          在第二步中，用户可以进一步说明自己更偏向系统化学习、快速入门、项目驱动还是考试导向，同时设置难度级别和学习目标，让路径方向更准确。
+                        </p>
+                        <ul>
+                          <li>适合把“怎么学”“学到什么程度”一起表达清楚。</li>
+                          <li>这一步会直接影响路径的节奏、层次和侧重点。</li>
+                        </ul>
+                      </div>
+                      <div className="help-image-placeholder help-inline-image-placeholder">
+                        <img className="help-inline-feature-image" src={learningPathSmartStepTwoImage} alt="学习路径智能生成第二步" />
+                      </div>
+                    </article>
+
+                    <article id="learning-path-smart-step-three" className="help-content-card help-feature-card">
+                      <div className="help-feature-copy">
+                        <p className="help-section-mini">第三步</p>
+                        <h3>补充重点关注领域、想跳过的内容和已有基础</h3>
+                        <p>
+                          在第三步中，用户可以继续补充更个性化的配置，例如重点关注哪些内容、希望跳过哪些部分，以及自己已经掌握了哪些基础知识。
+                        </p>
+                        <ul>
+                          <li>适合让路径更贴合真实基础，而不是从完全统一的模板出发。</li>
+                          <li>也有助于减少不必要的重复学习内容。</li>
+                        </ul>
+                      </div>
+                      <div className="help-image-placeholder help-inline-image-placeholder">
+                        <img className="help-inline-feature-image" src={learningPathSmartStepThreeImage} alt="学习路径智能生成第三步" />
+                      </div>
+                    </article>
+
+                    <article id="learning-path-smart-confirm" className="help-content-card help-feature-card">
+                      <div className="help-feature-copy">
+                        <p className="help-section-mini">确认执行前</p>
+                        <h3>在最终确认前，可手动输入用户自己的想法</h3>
+                        <p>
+                          在正式执行生成之前，页面会先展示系统整理后的阶段方案、预期结果和重点范围。用户可以在这一阶段结合 Synesis 的输出，继续加入自己的学习想法，再决定是否确认执行。
+                        </p>
+                        <ul>
+                          <li>适合补充个人节奏、重点章节、考试目标或时间限制。</li>
+                          <li>能让最终生成结果更符合用户自己的实际安排。</li>
+                        </ul>
+                      </div>
+                      <div className="help-image-placeholder help-inline-image-placeholder">
+                        <img className="help-inline-feature-image" src={learningPathSmartConfirmDraftImage} alt="学习路径确认执行前输入个人想法" />
+                      </div>
+                    </article>
+
+                    <article id="learning-path-smart-result" className="help-content-card help-feature-card">
+                      <div className="help-feature-copy">
+                        <p className="help-section-mini">生成结果</p>
+                        <h3>确认执行后，系统会生成可继续调整的学习路径</h3>
+                        <p>
+                          确认执行后，系统会正式生成学习路径结果。得到的路径并不是完全固定的终稿，用户后续仍然可以结合自己的学习计划继续补充、删减和调整。
+                        </p>
+                        <ul>
+                          <li>适合把智能生成结果作为基础草稿，再继续个性化完善。</li>
+                          <li>这样更容易兼顾系统建议与个人执行习惯。</li>
+                        </ul>
+                      </div>
+                      <div className="help-image-placeholder help-inline-image-placeholder">
+                        <img className="help-inline-feature-image" src={learningPathSmartResultImage} alt="学习路径智能生成结果" />
+                      </div>
+                    </article>
+                  </div>
+
+                  <aside className="help-doc-toc">
+                    <p className="help-doc-toc-label">目录</p>
+                    <div className="help-doc-toc-list">
+                      <a href="#learning-path-smart-overview" className="help-doc-toc-link">智能生成概览</a>
+                      <a href="#learning-path-smart-mode" className="help-doc-toc-link">左上角选择</a>
+                      <a href="#learning-path-smart-step-one" className="help-doc-toc-link">第一步</a>
+                      <a href="#learning-path-smart-step-two" className="help-doc-toc-link">第二步</a>
+                      <a href="#learning-path-smart-step-three" className="help-doc-toc-link">第三步</a>
+                      <a href="#learning-path-smart-confirm" className="help-doc-toc-link">确认执行前补充想法</a>
+                      <a href="#learning-path-smart-result" className="help-doc-toc-link">生成结果</a>
+                    </div>
+                  </aside>
+                </div>
+              ) : activeLearningPathSubsection.id === 'learning-path-recommendation' ? (
+                <div className="help-doc-layout">
+                  <div className="help-doc-main">
+                    <article id="learning-path-recommendation-overview" className="help-content-card help-home-topic-card">
+                      <p className="help-section-mini">建议使用方式</p>
+                      <h3>先智能生成，再结合自己的计划继续调整</h3>
+                      <p>
+                        学习路径最推荐的使用方式，是先让系统给出一版结构化结果，再由用户结合 Synesis 的输出和自己的实际目标进行二次修正。这样既能提高效率，也能保留路径的个性化程度。
+                      </p>
+                      <ul>
+                        <li>先通过智能生成快速得到初始路径。</li>
+                        <li>在确认执行前，把 Synesis 的建议和用户自己的想法结合起来。</li>
+                        <li>路径生成后，再按个人计划继续补充、删减和调整。</li>
+                      </ul>
+                    </article>
+
+                    <article id="learning-path-recommendation-flow" className="help-content-card">
+                      <h3>推荐使用流程</h3>
+                      <ol>
+                        <li>先使用智能生成，快速建立一版基础学习路径。</li>
+                        <li>在确认执行前，根据 Synesis 的输出加入自己的学习想法、目标和限制条件。</li>
+                        <li>生成完成后，再结合自己的学习计划手动调整学习路径结构。</li>
+                      </ol>
+                    </article>
+
+                    <article id="learning-path-recommendation-benefit" className="help-content-card help-content-card-soft">
+                      <h3>为什么推荐这样使用</h3>
+                      <ul>
+                        <li>既能利用系统生成的效率，又不会丢掉用户自己的学习判断。</li>
+                        <li>最终得到的学习路径更容易真正落到日常学习执行中。</li>
+                      </ul>
+                    </article>
+                  </div>
+
+                  <aside className="help-doc-toc">
+                    <p className="help-doc-toc-label">目录</p>
+                    <div className="help-doc-toc-list">
+                      <a href="#learning-path-recommendation-overview" className="help-doc-toc-link">建议使用方式概览</a>
+                      <a href="#learning-path-recommendation-flow" className="help-doc-toc-link">推荐使用流程</a>
+                      <a href="#learning-path-recommendation-benefit" className="help-doc-toc-link">为什么推荐这样使用</a>
+                    </div>
+                  </aside>
+                </div>
+              ) : null}
+            </section>
+          ) : null}
+
+          {!isHomeSection && !isLearningPathSection && !isNotesSection ? (
             <section className="help-section help-section-single">
               <div className="help-section-header">
                 <div className="help-section-title-row">
