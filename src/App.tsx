@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Compass, FileText, House, NotebookPen, Sparkles } from 'lucide-react';
+import { Compass, FileText, House, NotebookPen } from 'lucide-react';
 import homeOverviewImage from './assets/home-overview.png';
+import synesisLogoImage from './assets/synesis-logo.svg';
 import homeSidebarNavigationImage from './assets/home-sidebar-navigation.jpeg';
 import homeSidebarHistoryImage from './assets/home-sidebar-history.jpeg';
 import homeThemeToggleImage from './assets/home-theme-toggle.jpeg';
@@ -10,14 +11,21 @@ import homeChatInputImage from './assets/home-chat-input.jpeg';
 import homeChatPromptsImage from './assets/home-chat-prompts.jpeg';
 import homeChatOverviewImage from './assets/home-chat-overview.jpeg';
 import homeRightPlanImage from './assets/home-right-plan.jpeg';
+import plansGenerateOverviewImage from './assets/plans-generate-overview.png';
 import homeRightHeatImage from './assets/home-right-heat.jpeg';
 import homeSubjectSelectionImage from './assets/home-subject-selection.jpeg';
 import homeSubjectTopButtonImage from './assets/home-subject-top-button.jpeg';
+import plansAdjustAgentImage from './assets/plans-adjust-agent.png';
+import plansAdjustEditImage from './assets/plans-adjust-edit.png';
+import plansGenerateDayImage from './assets/plans-generate-day.png';
+import plansGenerateWeekImage from './assets/plans-generate-week.png';
 import homeGgbButtonImage from './assets/home-ggb-button.jpeg';
 import homeGgbPreviewEntryImage from './assets/home-ggb-preview-entry.jpeg';
 import homeGgb2dImage from './assets/home-ggb-2d.jpeg';
 import homeGgb3dImage from './assets/home-ggb-3d.jpeg';
 import homeManimButtonImage from './assets/home-manim-button.jpeg';
+import homeManimPreviewVideo from './assets/home-manim-preview.mp4';
+import homeManimPreviewStillImage from './assets/home-manim-preview-still.png';
 import homeManimRenderImage from './assets/home-manim-render.jpeg';
 import homeFormulaButtonImage from './assets/home-formula-button.jpeg';
 import homeFormulaLibraryImage from './assets/home-formula-library.jpeg';
@@ -32,6 +40,11 @@ import notesCreateSelectionImage from './assets/notes-create-selection.jpeg';
 import notesUsageSearchImage from './assets/notes-usage-search.jpeg';
 import notesUsageExportImage from './assets/notes-usage-export-pdf.jpeg';
 import learningPathModeSelectImage from './assets/learning-path-mode-select.jpeg';
+import learningPathManualChildImage from './assets/learning-path-manual-child.png';
+import learningPathManualDeleteImageOne from './assets/learning-path-manual-delete-1.png';
+import learningPathManualDeleteImageTwo from './assets/learning-path-manual-delete-2.png';
+import learningPathManualLayoutImageOne from './assets/learning-path-manual-layout-1.png';
+import learningPathManualLayoutImageTwo from './assets/learning-path-manual-layout-2.png';
 import learningPathManualToolbarImage from './assets/learning-path-manual-toolbar.jpeg';
 import learningPathManualStructureImage from './assets/learning-path-manual-structure.jpeg';
 import learningPathSmartStepOneImage from './assets/learning-path-smart-step-1.jpeg';
@@ -62,6 +75,11 @@ type HomeSubsection = {
   bullets: string[];
   imageSrc?: string;
   imageAlt?: string;
+};
+
+type PreviewImage = {
+  src: string;
+  alt: string;
 };
 
 const guideSections: GuideSection[] = [
@@ -128,25 +146,26 @@ const guideSections: GuideSection[] = [
     title: '计划与总结如何使用',
     icon: FileText,
     intro:
-      '计划与总结模块主要服务于阶段安排和每日推进。它帮助用户把目标拆成更清晰的任务，并在使用后形成回顾与总结。',
+      '计划与总结模块帮助用户把学习目标变成当天或本周可执行的安排，并在完成学习后留下清晰回顾。它更关注“今天做什么、怎么推进、学完后记住什么”这条完整学习链路。',
     purpose: [
-      '帮助用户把学习目标转化为更可执行的计划。',
-      '帮助用户查看今天该做什么，以及后续如何推进。',
-      '通过总结让学习结果不止停留在执行过程里。',
+      '帮助用户把模糊的学习目标拆成更清晰的日计划或周计划。',
+      '帮助用户在学习过程中持续查看进度、调整节奏和优化安排。',
+      '帮助用户在学习结束后沉淀每日总结，形成后续复习依据。',
     ],
     entry: [
-      '从左侧导航栏点击“计划与总结”。',
+      '从左侧导航栏进入计划与总结相关页面。',
       '也可以从主页右侧“今日计划”卡片进入相关操作。',
+      '已有计划后，还可以继续围绕当前计划提出新的调整诉求。',
     ],
     actions: [
-      '先查看当前是否已有今日计划。',
-      '如果没有，可以从入口生成计划。',
-      '根据计划内容逐项执行。',
-      '在使用后查看阶段总结或学习结果整理。',
+      '先根据今天或本周的学习需求生成一版计划安排。',
+      '查看系统给出的计划方案，并决定是否继续确认执行。',
+      '在执行过程中按计划逐项推进，必要时继续调整内容。',
+      '学习完成后查看总结内容，回顾当天收获与下一步方向。',
     ],
     tips: [
-      '建议至少准备两张图：一张是“生成计划前”，一张是“生成计划后”。',
-      '后续文案可以再区分“计划怎么生成”和“总结怎么看”。',
+      '建议单独拆成“生成计划”“执行与优化”“学习总结”三个小节来说明。',
+      '整段说明应突出用户体验和使用流程，而不是实现方式。',
     ],
   },
   {
@@ -268,6 +287,41 @@ const homeSubsections: HomeSubsection[] = [
     ],
   },
 ];
+const plansSubsections: HomeSubsection[] = [
+  {
+    id: 'plans-generate',
+    label: '生成计划',
+    title: '生成计划',
+    intro: '学习计划支持按日计划和周计划两种方式生成内容，用户可以先表达自己的学习需求，再查看系统给出的一版方案。',
+    bullets: [
+      '日计划更适合安排今天可投入的时间和具体任务。',
+      '周计划更适合梳理这一周的学习重点和整体节奏。',
+      '系统会先给出一版方案，用户确认后再正式生成计划。',
+    ],
+  },
+  {
+    id: 'plans-adjust',
+    label: '执行与优化',
+    title: '执行与优化',
+    intro: '计划生成后，用户可以一边执行一边调整，让计划始终贴合自己的真实学习节奏。',
+    bullets: [
+      '可以直接勾选完成状态，随时知道自己推进到了哪里。',
+      '如果安排不合适，可以继续修改计划内容，而不是整份重来。',
+      '优化后的结果仍然围绕当前计划展开，更适合连续推进学习。',
+    ],
+  },
+  {
+    id: 'plans-summary',
+    label: '学习总结',
+    title: '学习总结',
+    intro: '学习总结用于在完成学习后回看当天内容，把执行过的任务、重点结论和后续方向沉淀下来。',
+    bullets: [
+      '总结会按天积累，方便之后回看和复习。',
+      '它更适合帮助用户整理“今天学了什么、还差什么、下一步做什么”。',
+      '和学习计划配合使用时，更容易形成完整的学习闭环。',
+    ],
+  },
+];
 const notesSubsections: HomeSubsection[] = [
   {
     id: 'notes-create',
@@ -328,6 +382,7 @@ const learningPathSubsections: HomeSubsection[] = [
   },
 ];
 const defaultHomeSubsectionId = homeSubsections[0].id;
+const defaultPlansSubsectionId = plansSubsections[0].id;
 const defaultNotesSubsectionId = notesSubsections[0].id;
 const defaultLearningPathSubsectionId = learningPathSubsections[0].id;
 const defaultSectionId = guideSections[0].id;
@@ -350,6 +405,11 @@ const getHomeSubsectionFromHash = (hash: string): HomeSubsection => {
   return matchedSubsection ?? homeSubsections[0];
 };
 
+const getPlansSubsectionFromHash = (hash: string): HomeSubsection => {
+  const matchedSubsection = plansSubsections.find((item) => item.id === hash);
+  return matchedSubsection ?? plansSubsections[0];
+};
+
 const getNotesSubsectionFromHash = (hash: string): HomeSubsection => {
   const matchedSubsection = notesSubsections.find((item) => item.id === hash);
   return matchedSubsection ?? notesSubsections[0];
@@ -362,6 +422,7 @@ const getLearningPathSubsectionFromHash = (hash: string): HomeSubsection => {
 
 function App() {
   const [currentHash, setCurrentHash] = useState<string>(getHashValue);
+  const [previewImage, setPreviewImage] = useState<PreviewImage | null>(null);
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -380,10 +441,32 @@ function App() {
     if (currentHash === 'learning-path') {
       window.location.replace(`#${defaultLearningPathSubsectionId}`);
     }
+    if (currentHash === 'plans') {
+      window.location.replace(`#${defaultPlansSubsectionId}`);
+    }
     if (currentHash === 'notes') {
       window.location.replace(`#${defaultNotesSubsectionId}`);
     }
   }, [currentHash]);
+
+  useEffect(() => {
+    if (!previewImage) return;
+
+    const previousOverflow = document.body.style.overflow;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setPreviewImage(null);
+      }
+    };
+
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [previewImage]);
 
   const activeSectionId = useMemo(() => getSectionFromHash(currentHash), [currentHash]);
   const activeSection = useMemo(
@@ -391,6 +474,7 @@ function App() {
     [activeSectionId],
   );
   const activeHomeSubsection = useMemo(() => getHomeSubsectionFromHash(currentHash), [currentHash]);
+  const activePlansSubsection = useMemo(() => getPlansSubsectionFromHash(currentHash), [currentHash]);
   const activeNotesSubsection = useMemo(() => getNotesSubsectionFromHash(currentHash), [currentHash]);
   const activeLearningPathSubsection = useMemo(
     () => getLearningPathSubsectionFromHash(currentHash),
@@ -398,6 +482,7 @@ function App() {
   );
   const ActiveIcon = activeSection.icon;
   const isHomeSection = activeSection.id === 'home';
+  const isPlansSection = activeSection.id === 'plans';
   const isLearningPathSection = activeSection.id === 'learning-path';
   const isNotesSection = activeSection.id === 'notes';
   const isHomePageIntro = activeHomeSubsection.id === 'home-page-intro';
@@ -410,6 +495,8 @@ function App() {
   const isHomeManimPage = activeHomeSubsection.id === 'home-manim';
   const activeSubsection = isHomeSection
     ? activeHomeSubsection
+    : isPlansSection
+      ? activePlansSubsection
     : isLearningPathSection
       ? activeLearningPathSubsection
     : isNotesSection
@@ -420,13 +507,29 @@ function App() {
     ? activeSubsection.intro
     : '当前页面采用分页面说明结构。点击左侧目录或顶部导航后，会直接切换到对应说明页，而不是继续在同一页面里堆叠内容。';
 
+  const handleImagePreview = (event: React.MouseEvent<HTMLDivElement>) => {
+    const target = event.target;
+    if (!(target instanceof HTMLImageElement)) return;
+
+    const isPreviewable =
+      target.classList.contains('help-inline-feature-image') ||
+      target.classList.contains('help-overview-image');
+
+    if (!isPreviewable) return;
+
+    setPreviewImage({
+      src: target.currentSrc || target.src,
+      alt: target.alt || '图片预览',
+    });
+  };
+
   return (
-    <div className="help-shell">
+    <div className="help-shell" onClick={handleImagePreview}>
       <header className="help-topbar">
         <div className="help-topbar-inner">
           <a className="help-brand" href={`#${defaultHomeSubsectionId}`}>
             <span className="help-brand-mark">
-              <Sparkles size={18} />
+              <img className="help-brand-logo" src={synesisLogoImage} alt="Synesis logo" />
             </span>
             <span className="help-brand-text">
               <strong>Synesis</strong>
@@ -441,6 +544,8 @@ function App() {
                 href={
                   section.id === 'home'
                     ? `#${defaultHomeSubsectionId}`
+                    : section.id === 'plans'
+                      ? `#${defaultPlansSubsectionId}`
                     : section.id === 'learning-path'
                       ? `#${defaultLearningPathSubsectionId}`
                     : section.id === 'notes'
@@ -469,6 +574,8 @@ function App() {
                     href={
                       section.id === 'home'
                         ? `#${defaultHomeSubsectionId}`
+                        : section.id === 'plans'
+                          ? `#${defaultPlansSubsectionId}`
                         : section.id === 'learning-path'
                           ? `#${defaultLearningPathSubsectionId}`
                         : section.id === 'notes'
@@ -484,14 +591,22 @@ function App() {
               })}
             </div>
 
-            {isHomeSection || isLearningPathSection || isNotesSection ? (
+            {isHomeSection || isPlansSection || isLearningPathSection || isNotesSection ? (
               <div className="help-sidebar-subnav-group">
                 <p className="help-sidebar-label">
-                  {isHomeSection ? '主页目录' : isLearningPathSection ? '学习路径目录' : '智能笔记目录'}
+                  {isHomeSection
+                    ? '主页目录'
+                    : isPlansSection
+                      ? '计划与总结目录'
+                    : isLearningPathSection
+                      ? '学习路径目录'
+                      : '智能笔记目录'}
                 </p>
                 <div className="help-sidebar-subnav">
                   {(isHomeSection
                     ? homeSubsections
+                    : isPlansSection
+                      ? plansSubsections
                     : isLearningPathSection
                       ? learningPathSubsections
                       : notesSubsections).map((item) => (
@@ -502,6 +617,8 @@ function App() {
                         item.id === (
                           isHomeSection
                             ? activeHomeSubsection.id
+                            : isPlansSection
+                              ? activePlansSubsection.id
                             : isLearningPathSection
                               ? activeLearningPathSubsection.id
                               : activeNotesSubsection.id
@@ -1074,6 +1191,33 @@ function App() {
                           <img className="help-inline-feature-image" src={homeManimRenderImage} alt="Manim 视频渲染过程" />
                         </div>
                       </article>
+
+                      <article id="home-manim-preview" className="help-content-card help-feature-card">
+                        <div className="help-feature-copy">
+                          <p className="help-section-mini">视频预览</p>
+                          <h3>生成完成后可直接预览教学动画视频</h3>
+                          <p>当 Manim 任务生成完成后，用户可以直接在页面中预览结果视频，更直观地查看讲解动画、图形变化和整体节奏。</p>
+                          <ul>
+                            <li>适合快速确认生成结果是否符合当前学习需求。</li>
+                            <li>如果视频方向还需要调整，也可以继续补充新的生成要求。</li>
+                          </ul>
+                        </div>
+                        <div className="help-theme-stack">
+                          <div className="help-image-placeholder help-inline-image-placeholder">
+                            <img className="help-inline-feature-image" src={homeManimPreviewStillImage} alt="Manim 视频预览界面截图" />
+                          </div>
+                          <div className="help-image-placeholder help-inline-image-placeholder">
+                            <video
+                              className="help-inline-feature-video"
+                              src={homeManimPreviewVideo}
+                              controls
+                              playsInline
+                              preload="metadata"
+                            />
+                          </div>
+                        </div>
+                      </article>
+
                     </div>
 
                     <aside className="help-doc-toc">
@@ -1083,6 +1227,7 @@ function App() {
                         <a href="#home-manim-entry" className="help-doc-toc-link">启动入口</a>
                         <a href="#home-manim-content" className="help-doc-toc-link">支持内容</a>
                         <a href="#home-manim-render" className="help-doc-toc-link">生成过程</a>
+                        <a href="#home-manim-preview" className="help-doc-toc-link">视频预览</a>
                       </div>
                     </aside>
                   </div>
@@ -1204,6 +1349,262 @@ function App() {
                     ))}
                   </ul>
                 </article>
+              ) : null}
+            </section>
+          ) : null}
+
+          {isPlansSection ? (
+            <section className="help-overview">
+              {activePlansSubsection.id === 'plans-generate' ? (
+                <div className="help-doc-layout">
+                  <div className="help-doc-main">
+                    <article id="plans-generate-overview" className="help-content-card help-feature-card">
+                      <div className="help-feature-copy">
+                        <p className="help-section-mini">生成计划</p>
+                        <h3>学习计划支持日计划与周计划两种生成方式</h3>
+                        <p>
+                          用户进入学习计划后，可以先选择“日计划”或“周计划”。无论选择哪一种，系统都会先整理出一版方案，让用户先看过一遍，再决定是否正式生成。
+                        </p>
+                        <ul>
+                          <li>日计划更适合安排今天能投入多少时间、每段时间做什么。</li>
+                          <li>周计划更适合安排这一周的重点学科和整体学习方向。</li>
+                          <li>第一次生成时，系统会先给出一版方案，方便用户先判断是否合适。</li>
+                        </ul>
+                      </div>
+                      <div className="help-image-placeholder help-inline-image-placeholder">
+                        <img className="help-inline-feature-image" src={plansGenerateOverviewImage} alt="学习计划页面中的日计划与周计划切换空状态" />
+                      </div>
+                    </article>
+
+                    <article id="plans-generate-entry" className="help-content-card help-feature-card">
+                      <div className="help-feature-copy">
+                        <p className="help-section-mini">入口位置</p>
+                        <h3>可从主页“今日计划”卡片进入，也可直接打开学习计划页</h3>
+                        <p>
+                          用户既可以从主页右侧的“今日计划”卡片进入，也可以直接进入学习计划页面。进入后，页面左侧会帮助用户切换模式、查看进度并继续调整当前计划。
+                        </p>
+                        <ul>
+                          <li>主页卡片适合从工作台快速进入当天计划。</li>
+                          <li>计划页更适合在生成之后持续查看、执行和调整。</li>
+                        </ul>
+                      </div>
+                      <div className="help-image-placeholder help-inline-image-placeholder">
+                        <img className="help-inline-feature-image" src={homeRightPlanImage} alt="主页右侧今日计划卡片入口" />
+                      </div>
+                    </article>
+
+                    <article id="plans-generate-day" className="help-content-card help-feature-card">
+                      <div className="help-feature-copy">
+                        <p className="help-section-mini">日计划流程</p>
+                        <h3>日计划会按模板与参数逐步引导生成</h3>
+                        <p>
+                          日计划更强调“今天具体怎么安排”。系统会一步步引导用户设置学习时长、专注节奏、可用时间段和学科偏好，帮助用户把今天的任务安排得更清楚。
+                        </p>
+                        <ul>
+                          <li>如果之前有类似安排，可以继续沿用上次配置或模板。</li>
+                          <li>也可以重新设置今天可投入的时间和重点学科。</li>
+                          <li>最后再补充一句今天的具体学习诉求，让生成结果更贴合当下状态。</li>
+                        </ul>
+                      </div>
+                      <div className="help-image-placeholder help-inline-image-placeholder">
+                        <img className="help-inline-feature-image" src={plansGenerateDayImage} alt="日计划生成流程中的参数配置与输入界面" />
+                      </div>
+                    </article>
+
+                    <article id="plans-generate-week" className="help-content-card help-feature-card">
+                      <div className="help-feature-copy">
+                        <p className="help-section-mini">周计划流程</p>
+                        <h3>周计划表单更简洁，重点在学科和本周建议</h3>
+                        <p>
+                          周计划更适合用来安排这一周的大方向。相比日计划，它不强调具体到每一个时间段，而是更关注“这周重点学什么、怎么推进更合适”。
+                        </p>
+                        <ul>
+                          <li>先确定本周重点关注的学科。</li>
+                          <li>再补充这一周的学习重点、目标或想调整的节奏。</li>
+                          <li>生成后同样会先看到一版方案，再决定是否正式采用。</li>
+                        </ul>
+                      </div>
+                      <div className="help-image-placeholder help-inline-image-placeholder">
+                        <img className="help-inline-feature-image" src={plansGenerateWeekImage} alt="周计划生成流程中的学科选择与本周建议输入界面" />
+                      </div>
+                    </article>
+
+                    <article id="plans-generate-proposal" className="help-content-card help-content-card-soft">
+                      <p className="help-section-mini">先看方案</p>
+                      <h3>系统会先给你一版计划草稿，确认后才正式生成</h3>
+                      <p>
+                        计划生成不是用户一点击就直接完成。系统会先整理出一版草稿，让用户先看大致安排是否合理；如果觉得方向合适，再继续确认执行，正式生成完整计划。
+                      </p>
+                      <ul>
+                        <li>这样可以减少“一键生成后完全不符合预期”的情况。</li>
+                        <li>确认后，系统才会把这份计划正式安排到页面里。</li>
+                      </ul>
+                    </article>
+                  </div>
+
+                  <aside className="help-doc-toc">
+                    <p className="help-doc-toc-label">目录</p>
+                    <div className="help-doc-toc-list">
+                      <a href="#plans-generate-overview" className="help-doc-toc-link">生成计划概览</a>
+                      <a href="#plans-generate-entry" className="help-doc-toc-link">入口位置</a>
+                      <a href="#plans-generate-day" className="help-doc-toc-link">日计划流程</a>
+                      <a href="#plans-generate-week" className="help-doc-toc-link">周计划流程</a>
+                      <a href="#plans-generate-proposal" className="help-doc-toc-link">待确认方案</a>
+                    </div>
+                  </aside>
+                </div>
+              ) : activePlansSubsection.id === 'plans-adjust' ? (
+                <div className="help-doc-layout">
+                  <div className="help-doc-main">
+                    <article id="plans-adjust-overview" className="help-content-card help-home-topic-card">
+                      <p className="help-section-mini">执行与优化</p>
+                      <h3>计划生成后可以继续执行、修改和优化</h3>
+                      <p>
+                        学习计划不是一次性静态结果。生成之后，用户可以边执行边调整：有些内容可以直接在计划里改，有些更适合继续告诉系统“我想怎么调整”，再让系统给出新的安排方案。
+                      </p>
+                      <ul>
+                        <li>计划列表适合处理单项完成状态和少量内容修改。</li>
+                        <li>进一步优化时，更适合围绕整体节奏和优先级继续调整。</li>
+                        <li>系统给出的优化结果也会先让用户看一遍，再继续执行。</li>
+                      </ul>
+                    </article>
+
+                    <article id="plans-adjust-edit" className="help-content-card help-feature-card">
+                      <div className="help-feature-copy">
+                        <p className="help-section-mini">列表内操作</p>
+                        <h3>计划项支持勾选完成与直接编辑</h3>
+                        <p>
+                          在计划列表中，用户可以直接勾选某项是否完成，也可以打开编辑面板修改单条计划内容。这样更适合在真实学习过程中一边做一边微调，而不是每次都重新生成整份计划。
+                        </p>
+                        <ul>
+                          <li>完成一项就勾选一项，能更直观看到当前进度。</li>
+                          <li>如果某个任务安排不合适，可以直接修改内容再继续推进。</li>
+                          <li>这种方式更适合处理中途的小调整，而不是大幅重排。</li>
+                        </ul>
+                      </div>
+                      <div className="help-image-placeholder help-inline-image-placeholder">
+                        <img className="help-inline-feature-image" src={plansAdjustEditImage} alt="学习计划列表中的完成勾选与编辑操作" />
+                      </div>
+                    </article>
+
+                    <article id="plans-adjust-agent" className="help-content-card help-feature-card">
+                      <div className="help-feature-copy">
+                        <p className="help-section-mini">计划助手</p>
+                        <h3>优化当前计划时，AI 会先出方案，再按确认结果执行</h3>
+                        <p>
+                          当用户觉得当前计划整体还需要调整时，可以继续提出新的修改诉求，例如“把周末安排轻一点”“增加英语听力时间”“减少连续学习时长”。系统会先整理出调整方案，再由用户决定是否采用。
+                        </p>
+                        <ul>
+                          <li>适合处理“整体节奏要改”“优先级要调”“安排不够合理”这类问题。</li>
+                          <li>如果新方案还不满意，也可以继续补充想法。</li>
+                          <li>只有用户确认之后，系统才会把修改真正应用到当前计划里。</li>
+                        </ul>
+                      </div>
+                      <div className="help-image-placeholder help-inline-image-placeholder">
+                        <img className="help-inline-feature-image" src={plansAdjustAgentImage} alt="计划助手中的方案调整与确认执行" />
+                      </div>
+                    </article>
+
+                    <article id="plans-adjust-stream" className="help-content-card">
+                      <p className="help-section-mini">执行过程</p>
+                      <h3>执行修改时会逐步返回工具调用和计划更新</h3>
+                      <p>
+                        当用户确认采用新方案后，页面会逐步刷新当前计划内容。对用户来说，这更像是在看“系统正在根据你的要求重排计划”，而不是突然出现一份完全陌生的新结果。
+                      </p>
+                      <ul>
+                        <li>用户可以清楚知道当前修改还在进行中，还是已经完成。</li>
+                        <li>修改完成后，计划列表会更新成新的结果。</li>
+                        <li>如果还想继续优化，也可以直接在当前基础上再来一轮。</li>
+                      </ul>
+                    </article>
+
+                    <article id="plans-adjust-revert" className="help-content-card help-content-card-soft">
+                      <p className="help-section-mini">撤销更改</p>
+                      <h3>AI 修改前会保留快照，支持恢复到修改前状态</h3>
+                      <p>
+                        如果这轮优化后的结果并不理想，用户还可以把计划恢复到调整之前的状态。这样在尝试不同安排方式时，会更有安全感，也不容易因为一次修改就把原来的安排彻底打乱。
+                      </p>
+                      <ul>
+                        <li>适合在反复尝试不同安排方式时使用。</li>
+                        <li>让用户更敢于尝试优化，而不用担心一改就回不去。</li>
+                      </ul>
+                    </article>
+                  </div>
+
+                  <aside className="help-doc-toc">
+                    <p className="help-doc-toc-label">目录</p>
+                    <div className="help-doc-toc-list">
+                      <a href="#plans-adjust-overview" className="help-doc-toc-link">执行与优化概览</a>
+                      <a href="#plans-adjust-edit" className="help-doc-toc-link">列表内操作</a>
+                      <a href="#plans-adjust-agent" className="help-doc-toc-link">计划助手</a>
+                      <a href="#plans-adjust-stream" className="help-doc-toc-link">执行过程</a>
+                      <a href="#plans-adjust-revert" className="help-doc-toc-link">撤销更改</a>
+                    </div>
+                  </aside>
+                </div>
+              ) : activePlansSubsection.id === 'plans-summary' ? (
+                <div className="help-doc-layout">
+                  <div className="help-doc-main">
+                    <article id="plans-summary-overview" className="help-content-card help-home-topic-card">
+                      <p className="help-section-mini">学习总结</p>
+                      <h3>学习总结用于回看当天内容，把学习结果真正沉淀下来</h3>
+                      <p>
+                        学习计划解决的是“今天做什么”，学习总结解决的是“今天学到了什么”。当一天的学习任务推进之后，系统会把当天的完成情况、重点内容和下一步方向整理成总结，方便用户回看和延续后续学习。
+                      </p>
+                      <ul>
+                        <li>它更适合承担回顾、整理和复习前回看这类任务。</li>
+                        <li>相比计划，学习总结更关注已经完成的内容和实际收获。</li>
+                        <li>计划与总结结合使用时，更容易形成完整的学习闭环。</li>
+                      </ul>
+                    </article>
+
+                    <article id="plans-summary-create" className="help-content-card">
+                      <p className="help-section-mini">自动沉淀</p>
+                      <h3>完成学习任务后，系统会逐步沉淀出每日总结</h3>
+                      <p>
+                        用户不需要每次都从零开始写回顾。系统会围绕当天的学习内容，把重点任务、完成情况和当天的结果逐步沉淀成一份总结，让回顾动作更轻量，也更容易坚持。
+                      </p>
+                      <ul>
+                        <li>适合在一天学习结束后快速回顾主要收获。</li>
+                        <li>也适合在第二天继续学习前，先回看上一天的推进情况。</li>
+                      </ul>
+                    </article>
+
+                    <article id="plans-summary-review" className="help-content-card">
+                      <p className="help-section-mini">回看方式</p>
+                      <h3>总结会按日期积累，方便之后集中回看</h3>
+                      <p>
+                        学习总结不是一次性提示，而是适合被持续积累和回看的内容。按日期保存后，用户之后可以更容易回顾某一天到底学了什么、卡在了哪里、下一步要继续什么。
+                      </p>
+                      <ul>
+                        <li>适合在复习前快速找回之前的学习状态。</li>
+                        <li>也适合把零散的每天进展逐步串成阶段性回顾。</li>
+                      </ul>
+                    </article>
+
+                    <article id="plans-summary-value" className="help-content-card help-content-card-soft">
+                      <p className="help-section-mini">使用价值</p>
+                      <h3>总结不是重复计划，而是帮助用户看见真实学习结果</h3>
+                      <p>
+                        计划更关注“接下来做什么”，总结更关注“已经做成了什么”。当用户把这两部分连起来使用时，就更容易把学习从一次次零散执行，变成可回顾、可调整、可持续积累的过程。
+                      </p>
+                      <ul>
+                        <li>它能帮助用户知道自己一天不是“忙过了”，而是真的“学到了”。</li>
+                        <li>也能帮助用户把下一步安排建立在真实完成情况之上。</li>
+                      </ul>
+                    </article>
+                  </div>
+
+                  <aside className="help-doc-toc">
+                    <p className="help-doc-toc-label">目录</p>
+                    <div className="help-doc-toc-list">
+                      <a href="#plans-summary-overview" className="help-doc-toc-link">学习总结概览</a>
+                      <a href="#plans-summary-create" className="help-doc-toc-link">自动沉淀</a>
+                      <a href="#plans-summary-review" className="help-doc-toc-link">回看方式</a>
+                      <a href="#plans-summary-value" className="help-doc-toc-link">使用价值</a>
+                    </div>
+                  </aside>
+                </div>
               ) : null}
             </section>
           ) : null}
@@ -1460,7 +1861,7 @@ function App() {
                         </ul>
                       </div>
                       <div className="help-image-placeholder help-inline-image-placeholder">
-                        <img className="help-inline-feature-image" src={learningPathManualStructureImage} alt="学习路径中补充下级节点" />
+                        <img className="help-inline-feature-image" src={learningPathManualChildImage} alt="学习路径中补充下级节点" />
                       </div>
                     </article>
 
@@ -1493,8 +1894,13 @@ function App() {
                           <li>有助于用户从全局视角查看当前学习路径结构。</li>
                         </ul>
                       </div>
-                      <div className="help-image-placeholder help-inline-image-placeholder">
-                        <img className="help-inline-feature-image" src={learningPathManualToolbarImage} alt="学习路径自动调整布局功能" />
+                      <div className="help-theme-stack">
+                        <div className="help-image-placeholder help-inline-image-placeholder">
+                          <img className="help-inline-feature-image" src={learningPathManualLayoutImageOne} alt="学习路径自动平和布局前的图谱结构" />
+                        </div>
+                        <div className="help-image-placeholder help-inline-image-placeholder">
+                          <img className="help-inline-feature-image" src={learningPathManualLayoutImageTwo} alt="学习路径自动平和布局后的图谱结构" />
+                        </div>
                       </div>
                     </article>
 
@@ -1510,8 +1916,13 @@ function App() {
                           <li>让学习路径在反复调整中保持简洁和可执行。</li>
                         </ul>
                       </div>
-                      <div className="help-image-placeholder help-inline-image-placeholder">
-                        <img className="help-inline-feature-image" src={learningPathManualToolbarImage} alt="学习路径删除节点按钮" />
+                      <div className="help-theme-stack">
+                        <div className="help-image-placeholder help-inline-image-placeholder">
+                          <img className="help-inline-feature-image" src={learningPathManualDeleteImageOne} alt="学习路径中删除节点前的图谱结构" />
+                        </div>
+                        <div className="help-image-placeholder help-inline-image-placeholder">
+                          <img className="help-inline-feature-image" src={learningPathManualDeleteImageTwo} alt="学习路径中删除节点后的图谱结构" />
+                        </div>
                       </div>
                     </article>
                   </div>
@@ -1708,7 +2119,7 @@ function App() {
             </section>
           ) : null}
 
-          {!isHomeSection && !isLearningPathSection && !isNotesSection ? (
+          {!isHomeSection && !isPlansSection && !isLearningPathSection && !isNotesSection ? (
             <section className="help-section help-section-single">
               <div className="help-section-header">
                 <div className="help-section-title-row">
@@ -1780,6 +2191,36 @@ function App() {
           ) : null}
         </main>
       </div>
+
+      {previewImage ? (
+        <div
+          className="help-image-lightbox"
+          role="dialog"
+          aria-modal="true"
+          aria-label={previewImage.alt}
+          onClick={() => setPreviewImage(null)}
+        >
+          <button
+            type="button"
+            className="help-image-lightbox-close"
+            onClick={() => setPreviewImage(null)}
+            aria-label="关闭图片预览"
+          >
+            关闭
+          </button>
+          <div
+            className="help-image-lightbox-panel"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <img
+              className="help-image-lightbox-image"
+              src={previewImage.src}
+              alt={previewImage.alt}
+            />
+            <p className="help-image-lightbox-caption">{previewImage.alt}</p>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
